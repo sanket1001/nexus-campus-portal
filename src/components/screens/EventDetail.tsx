@@ -139,10 +139,11 @@ export function EventDetail({ eventId, onBack }: EventDetailProps) {
                 </div>
                 <Button 
                   size="lg" 
-                  className={`px-8 ${isRSVPed ? "bg-green-500 hover:bg-green-600" : ""}`}
+                  className="px-8"
+                  variant={isRSVPed ? "secondary" : "default"}
                   onClick={handleRSVP}
                 >
-                  {isRSVPed ? "Going ✓" : "RSVP"}
+                  {isRSVPed ? "Going" : "RSVP"}
                 </Button>
               </div>
               {isRSVPed && (

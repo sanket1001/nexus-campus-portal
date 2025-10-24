@@ -81,7 +81,7 @@ export function HomeFeed({ onNavigate }: HomeFeedProps) {
     }
   ]);
 
-  const [bigEvents] = useState([
+  const [bigEvents, setBigEvents] = useState([
     {
       id: "big-1",
       title: "Spring Career Fair 2024",
@@ -93,6 +93,7 @@ export function HomeFeed({ onNavigate }: HomeFeedProps) {
       attendees: 2500,
       price: "Free",
       isBookmarked: false,
+      isRSVPd: false,
       status: "upcoming"
     },
     {
@@ -106,6 +107,7 @@ export function HomeFeed({ onNavigate }: HomeFeedProps) {
       attendees: 8000,
       price: "Varies",
       isBookmarked: true,
+      isRSVPd: true,
       status: "happening"
     },
     {
@@ -119,11 +121,12 @@ export function HomeFeed({ onNavigate }: HomeFeedProps) {
       attendees: 15000,
       price: "Free",
       isBookmarked: false,
+      isRSVPd: false,
       status: "upcoming"
     }
   ]);
 
-  const [recommendedEvents] = useState([
+  const [recommendedEvents, setRecommendedEvents] = useState([
     {
       id: "1",
       title: "Study Abroad Info Session",
@@ -134,7 +137,8 @@ export function HomeFeed({ onNavigate }: HomeFeedProps) {
       category: "Academic",
       attendees: 45,
       price: "Free",
-      isBookmarked: false
+      isBookmarked: false,
+      isRSVPd: false
     },
     {
       id: "2",
@@ -146,7 +150,8 @@ export function HomeFeed({ onNavigate }: HomeFeedProps) {
       category: "Wellness",
       attendees: 67,
       price: "Free",
-      isBookmarked: true
+      isBookmarked: true,
+      isRSVPd: true
     }
   ]);
 
@@ -172,7 +177,21 @@ export function HomeFeed({ onNavigate }: HomeFeedProps) {
     console.log("Share post:", postId);
   };
 
+  const handleRSVP = (eventId: string) => {
+    setRecommendedEvents(prev => prev.map(event => 
+      event.id === eventId 
+        ? { ...event, isRSVPd: !event.isRSVPd }
+        : event
+    ));
+  };
 
+  const handleBookmark = (eventId: string) => {
+    setRecommendedEvents(prev => prev.map(event => 
+      event.id === eventId 
+        ? { ...event, isBookmarked: !event.isBookmarked }
+        : event
+    ));
+  };
 
   const handleBigEventClick = (eventId: string) => {
     onNavigate?.("event-detail", { eventId });
@@ -197,7 +216,7 @@ export function HomeFeed({ onNavigate }: HomeFeedProps) {
       {/* Content */}
       <div className="max-w-md mx-auto">
         {/* Big Events Section */}
-        <div className="p-4 border-b border-border">
+        {/* <div className="p-4 border-b border-border">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Star className="h-5 w-5 text-primary" />
@@ -244,7 +263,7 @@ export function HomeFeed({ onNavigate }: HomeFeedProps) {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Campus Feed */}
         <div className="p-4 space-y-6">
@@ -274,6 +293,8 @@ export function HomeFeed({ onNavigate }: HomeFeedProps) {
                   key={event.id}
                   event={event}
                   variant="feed"
+                  onRSVP={handleRSVP}
+                  onBookmark={handleBookmark}
                 />
               ))}
             </div>

@@ -162,10 +162,10 @@ export function AIAssistant({ isOpen, onToggle }: AIAssistantProps) {
           </div>
         </CardHeader>
 
-        <CardContent className="p-0 flex flex-col h-full">
+        <CardContent className="p-0 flex flex-col overflow-hidden" style={{ height: 'calc(100% - 70px)' }}>
           {/* Messages */}
-          <ScrollArea className="flex-1 px-4">
-            <div className="space-y-4 pb-4">
+          <ScrollArea className="flex-1 px-4 overflow-y-auto">
+            <div className="space-y-4 pb-4 pt-4">
               {messages.map((message) => (
                 <div key={message.id} className="space-y-2">
                   <div

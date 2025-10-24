@@ -1,6 +1,6 @@
 
   {
-      "name": "Social Media Events App",
+      "name": "social-media-events-app",
       "version": "0.1.0",
       "private": true,
       "dependencies": {

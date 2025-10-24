@@ -129,7 +129,7 @@ export default function App() {
         );
       
       case "profile":
-        return <UserProfile selectedProfileId={currentView.data?.profileId} onNavigate={handleNavigate} />;
+        return <UserProfile selectedProfileId={currentView.data?.profileId} activeTab={currentView.data?.activeTab} onNavigate={handleNavigate} />;
       
       default:
         return <HomeFeed onNavigate={handleNavigate} />;

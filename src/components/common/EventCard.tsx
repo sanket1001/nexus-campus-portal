@@ -16,6 +16,7 @@ interface EventCardProps {
     attendees: number;
     price: string;
     isBookmarked: boolean;
+    isRSVPd?: boolean;
   };
   onBookmark?: (eventId: string) => void;
   onRSVP?: (eventId: string) => void;
@@ -97,8 +98,13 @@ export function EventCard({ event, onBookmark, onRSVP, variant = "grid" }: Event
               </div>
               {onRSVP && (
                 <div className="flex justify-end">
-                  <Button size="sm" className="h-7 px-3" onClick={() => onRSVP(event.id)}>
-                    RSVP
+                  <Button 
+                    size="sm" 
+                    className="h-7 px-3" 
+                    onClick={() => onRSVP(event.id)}
+                    variant={event.isRSVPd ? "secondary" : "default"}
+                  >
+                    {event.isRSVPd ? "Going" : "RSVP"}
                   </Button>
                 </div>
               )}
@@ -153,8 +159,12 @@ export function EventCard({ event, onBookmark, onRSVP, variant = "grid" }: Event
           </div>
           
           {onRSVP && (
-            <Button className="w-full mt-3" onClick={() => onRSVP(event.id)}>
-              RSVP
+            <Button 
+              className="w-full mt-3" 
+              onClick={() => onRSVP(event.id)}
+              variant={event.isRSVPd ? "secondary" : "default"}
+            >
+              {event.isRSVPd ? "Going" : "RSVP"}
             </Button>
           )}
         </div>

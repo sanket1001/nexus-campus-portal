@@ -17,7 +17,7 @@ export function EventsScreen() {
   const dateFilters = ["all", "today", "tomorrow", "this-week", "this-month"];
   const locations = ["all", "Library", "Recreation Center", "Student Union", "Campus Quad", "Engineering Building", "Convention Center", "Campus Amphitheater", "Wellness Center"];
 
-  const [events] = useState([
+  const [events, setEvents] = useState([
     {
       id: "evt1",
       title: "CS Study Group for Finals",
@@ -29,6 +29,7 @@ export function EventsScreen() {
       attendees: 23,
       price: "Free",
       isBookmarked: false,
+      isRSVPd: false,
       organizer: "Computer Science Club",
       description: "Join us for a collaborative study session as we prepare for final exams. Bring your questions and let's tackle them together!"
     },
@@ -43,6 +44,7 @@ export function EventsScreen() {
       attendees: 156,
       price: "Free",
       isBookmarked: true,
+      isRSVPd: true,
       organizer: "Campus Basketball League",
       description: "Annual basketball tournament open to all skill levels. Form your team or join as a free agent!"
     },
@@ -57,6 +59,7 @@ export function EventsScreen() {
       attendees: 89,
       price: "Free",
       isBookmarked: false,
+      isRSVPd: false,
       organizer: "Art & Design Society",
       description: "Celebrate student creativity at our winter exhibition featuring paintings, sculptures, and digital art."
     },
@@ -71,6 +74,7 @@ export function EventsScreen() {
       attendees: 245,
       price: "Free",
       isBookmarked: false,
+      isRSVPd: false,
       organizer: "Alpha Beta Gamma",
       description: "Meet representatives from various fraternities and sororities. Learn about opportunities for leadership and service."
     },
@@ -85,6 +89,7 @@ export function EventsScreen() {
       attendees: 78,
       price: "Free",
       isBookmarked: true,
+      isRSVPd: false,
       organizer: "Volunteer Corps",
       description: "Help maintain our campus community garden. We'll be planting, weeding, and harvesting fresh produce."
     },
@@ -99,6 +104,7 @@ export function EventsScreen() {
       attendees: 312,
       price: "$5",
       isBookmarked: false,
+      isRSVPd: false,
       organizer: "International Student Association",
       description: "Taste authentic dishes from around the world prepared by international students and local restaurants."
     },
@@ -113,6 +119,7 @@ export function EventsScreen() {
       attendees: 567,
       price: "Free",
       isBookmarked: false,
+      isRSVPd: true,
       organizer: "Career Services",
       description: "Network with top employers and explore internship and job opportunities across various industries."
     },
@@ -127,6 +134,7 @@ export function EventsScreen() {
       attendees: 445,
       price: "$10",
       isBookmarked: true,
+      isRSVPd: false,
       organizer: "Music Department",
       description: "Enjoy an evening of live performances by student bands and solo artists in our beautiful outdoor venue."
     },
@@ -141,6 +149,7 @@ export function EventsScreen() {
       attendees: 134,
       price: "Free",
       isBookmarked: false,
+      isRSVPd: false,
       organizer: "Student Wellness Initiative",
       description: "Learn about mental health resources, stress management techniques, and peer support systems."
     },
@@ -155,6 +164,7 @@ export function EventsScreen() {
       attendees: 289,
       price: "Free",
       isBookmarked: false,
+      isRSVPd: false,
       organizer: "Computer Science Club",
       description: "See cutting-edge student projects in AI, robotics, and software development. Network with tech industry professionals."
     }
@@ -200,13 +210,19 @@ export function EventsScreen() {
   });
 
   const handleBookmark = (eventId: string) => {
-    console.log("Bookmark event:", eventId);
-    // Toggle bookmark state - would typically update state/database
+    setEvents(prev => prev.map(event => 
+      event.id === eventId 
+        ? { ...event, isBookmarked: !event.isBookmarked }
+        : event
+    ));
   };
 
   const handleRSVP = (eventId: string) => {
-    console.log("RSVP to event:", eventId);
-    // Handle RSVP - would typically update state/database and show confirmation
+    setEvents(prev => prev.map(event => 
+      event.id === eventId 
+        ? { ...event, isRSVPd: !event.isRSVPd }
+        : event
+    ));
   };
 
   return (

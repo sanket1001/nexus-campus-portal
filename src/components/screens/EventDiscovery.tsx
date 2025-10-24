@@ -15,7 +15,7 @@ export function EventDiscovery() {
   const categories = ["all", "Academic", "Sports", "Arts", "Greek Life", "Service", "Cultural"];
   const types = ["all", "organizations", "students"];
 
-  const [organizations] = useState([
+  const [organizations, setOrganizations] = useState([
     {
       id: "org1",
       name: "Computer Science Club",
@@ -78,7 +78,7 @@ export function EventDiscovery() {
     }
   ]);
 
-  const [students] = useState([
+  const [students, setStudents] = useState([
     {
       id: "stu1",
       name: "Emily Chen",
@@ -178,11 +178,19 @@ export function EventDiscovery() {
   const allFiltered = [...filteredOrganizations, ...filteredStudents];
 
   const handleJoinOrganization = (orgId: string) => {
-    console.log("Join organization:", orgId);
+    setOrganizations(prev => prev.map(org => 
+      org.id === orgId 
+        ? { ...org, isJoined: !org.isJoined }
+        : org
+    ));
   };
 
   const handleFollowStudent = (studentId: string) => {
-    console.log("Follow student:", studentId);
+    setStudents(prev => prev.map(student => 
+      student.id === studentId 
+        ? { ...student, isFollowing: !student.isFollowing }
+        : student
+    ));
   };
 
   return (

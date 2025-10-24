@@ -35,10 +35,11 @@ import { ImageWithFallback } from "../figma/ImageWithFallback";
 
 interface UserProfileProps {
   selectedProfileId?: string;
+  activeTab?: string;
   onNavigate?: (screen: string, data?: any) => void;
 }
 
-export function UserProfile({ selectedProfileId = "student", onNavigate }: UserProfileProps) {
+export function UserProfile({ selectedProfileId = "student", activeTab = "about", onNavigate }: UserProfileProps) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editFormData, setEditFormData] = useState({
     bio: "",
@@ -724,9 +725,9 @@ export function UserProfile({ selectedProfileId = "student", onNavigate }: UserP
                     <Edit3 className="h-4 w-4 mr-2" />
                     Edit Profile
                   </Button>
-                  <Button variant="ghost" size="sm">
+                  {/* <Button variant="ghost" size="sm">
                     <Settings className="h-4 w-4" />
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
 
@@ -769,7 +770,7 @@ export function UserProfile({ selectedProfileId = "student", onNavigate }: UserP
       <div className="max-w-5xl mx-auto px-4 mt-6">
         {profileType === "student" ? (
           /* STUDENT PROFILE VIEW */
-          <Tabs defaultValue="about" className="space-y-6">
+          <Tabs defaultValue={activeTab} className="space-y-6">
             <TabsList className="w-full sm:w-auto">
               <TabsTrigger value="about">About</TabsTrigger>
               <TabsTrigger value="posts">Posts</TabsTrigger>
@@ -960,7 +961,7 @@ export function UserProfile({ selectedProfileId = "student", onNavigate }: UserP
                               {org.role}
                             </Badge>
                           </div>
-                          <Button variant="ghost" size="sm" className="h-7 px-2">
+                          <Button variant="ghost" size="sm" className="h-7 px-2" onClick={() => onNavigate?.("profile", { profileId: org.id, activeTab: "about" })}>
                             View Profile
                           </Button>
                         </div>
@@ -994,7 +995,7 @@ export function UserProfile({ selectedProfileId = "student", onNavigate }: UserP
           </Tabs>
         ) : (
           /* ORGANIZATION PROFILE VIEW */
-          <Tabs defaultValue="about" className="space-y-6">
+          <Tabs defaultValue={activeTab} className="space-y-6">
             <TabsList className="w-full sm:w-auto">
               <TabsTrigger value="about">About</TabsTrigger>
               <TabsTrigger value="events">Events</TabsTrigger>

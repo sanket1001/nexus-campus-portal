@@ -40,9 +40,9 @@ export function PostCard({ post, onLike, onComment, onShare }: PostCardProps) {
               <p className="text-sm text-muted-foreground">@{post.user.username} • {post.timestamp}</p>
             </div>
           </div>
-          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+          {/* <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
             <MoreHorizontal className="h-4 w-4" />
-          </Button>
+          </Button> */}
         </div>
 
         {/* Content */}
@@ -74,7 +74,7 @@ export function PostCard({ post, onLike, onComment, onShare }: PostCardProps) {
               <span className="text-sm">{post.likes}</span>
             </Button>
             
-            <Button
+            {/* <Button
               variant="ghost"
               size="sm"
               className="h-8 px-2 gap-2 text-muted-foreground"
@@ -82,17 +82,17 @@ export function PostCard({ post, onLike, onComment, onShare }: PostCardProps) {
             >
               <MessageCircle className="h-4 w-4" />
               <span className="text-sm">{post.comments}</span>
-            </Button>
+            </Button> */}
           </div>
 
-          <Button
+          {/* <Button
             variant="ghost"
             size="sm"
             className="h-8 px-2 text-muted-foreground"
             onClick={() => onShare(post.id)}
           >
             <Share className="h-4 w-4" />
-          </Button>
+          </Button> */}
         </div>
       </CardContent>
     </Card>
