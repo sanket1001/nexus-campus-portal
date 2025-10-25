@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Avatar, AvatarFallback } from "../ui/avatar";
@@ -30,23 +30,59 @@ interface AIAssistantProps {
   onToggle: () => void;
 }
 
+const INITIAL_GREETING: Message = {
+  id: "1",
+  content: "Hi! I'm your campus AI assistant. I can help you find events, get information about organizations, check dining hours, and answer questions about campus resources. How can I help you today?",
+  sender: "assistant",
+  timestamp: "now",
+  suggestions: [
+    "What events are happening this week?",
+    "Show me study spaces",
+    "Dining hall hours",
+    "Join student organizations"
+  ]
+};
+
 export function AIAssistant({ isOpen, onToggle }: AIAssistantProps) {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      content: "Hi! I'm your campus AI assistant. I can help you find events, get information about organizations, check dining hours, and answer questions about campus resources. How can I help you today?",
-      sender: "assistant",
-      timestamp: "now",
-      suggestions: [
-        "What events are happening this week?",
-        "Show me study spaces",
-        "Dining hall hours",
-        "Join student organizations"
-      ]
-    }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([INITIAL_GREETING]);
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const hasLoadedRef = useRef(false);
+
+  // Load chat history from localStorage when component mounts
+  useEffect(() => {
+    if (!hasLoadedRef.current) {
+      const savedMessages = localStorage.getItem("campus_ai_chat_history");
+      if (savedMessages) {
+        try {
+          const parsed = JSON.parse(savedMessages);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setMessages(parsed);
+          }
+        } catch (error) {
+          console.error("Failed to load chat history:", error);
+        }
+      }
+      hasLoadedRef.current = true;
+    }
+  }, []);
+
+  // Save chat history to localStorage whenever messages change
+  useEffect(() => {
+    if (hasLoadedRef.current && messages.length > 0) {
+      localStorage.setItem("campus_ai_chat_history", JSON.stringify(messages));
+    }
+  }, [messages]);
+
+  // Auto-scroll to bottom when new messages arrive or when opened
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
+  }, [isOpen, messages]);
 
   const handleSendMessage = async (message?: string) => {
     const messageText = message || inputMessage.trim();
@@ -120,9 +156,9 @@ export function AIAssistant({ isOpen, onToggle }: AIAssistantProps) {
         onClick={onToggle}
         className="fixed bottom-20 right-6 h-14 w-14 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 z-50 lg:bottom-8 lg:right-8"
         size="lg"
-        title="Open AI Assistant"
+        aria-label="Open AI Assistant chat"
       >
-        <Bot className="h-6 w-6" />
+        <Bot className="h-6 w-6" aria-hidden="true" />
       </Button>
     );
   }
@@ -136,18 +172,22 @@ export function AIAssistant({ isOpen, onToggle }: AIAssistantProps) {
       />
       
       {/* Chat Window */}
-      <Card className="fixed bottom-6 right-6 w-80 h-96 shadow-2xl z-50 lg:bottom-8 lg:right-8 lg:w-96 lg:h-[500px]">
+      <Card 
+        className="fixed bottom-6 right-6 w-80 h-96 shadow-2xl z-50 lg:bottom-8 lg:right-8 lg:w-96 lg:h-[500px]"
+        role="dialog"
+        aria-label="AI Assistant chat"
+      >
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
+              <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center" aria-hidden="true">
                 <Bot className="h-4 w-4 text-primary-foreground" />
               </div>
               <div>
                 <CardTitle className="text-sm">Campus Assistant</CardTitle>
                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <div className="h-2 w-2 bg-green-500 rounded-full" />
-                  <span>Online</span>
+                  <div className="h-2 w-2 bg-green-500 rounded-full" aria-hidden="true" />
+                  <span aria-label="Status: Online">Online</span>
                 </div>
               </div>
             </div>
@@ -156,15 +196,16 @@ export function AIAssistant({ isOpen, onToggle }: AIAssistantProps) {
               size="sm"
               onClick={onToggle}
               className="h-8 w-8 p-0"
+              aria-label="Close AI Assistant"
             >
-              <X className="h-4 w-4" />
+              <X className="h-4 w-4" aria-hidden="true" />
             </Button>
           </div>
         </CardHeader>
 
         <CardContent className="p-0 flex flex-col overflow-hidden" style={{ height: 'calc(100% - 70px)' }}>
           {/* Messages */}
-          <ScrollArea className="flex-1 px-4 overflow-y-auto">
+          <ScrollArea className="flex-1 px-4 overflow-y-auto" role="log" aria-live="polite" aria-label="Chat messages">
             <div className="space-y-4 pb-4 pt-4">
               {messages.map((message) => (
                 <div key={message.id} className="space-y-2">
@@ -235,28 +276,33 @@ export function AIAssistant({ isOpen, onToggle }: AIAssistantProps) {
                   </div>
                 </div>
               )}
+              
+              {/* Invisible element to scroll to */}
+              <div ref={messagesEndRef} />
             </div>
           </ScrollArea>
 
           {/* Input */}
           <div className="p-4 border-t">
-            <div className="flex gap-2">
+            <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }} className="flex gap-2">
               <Input
                 placeholder="Ask about campus resources..."
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
                 className="flex-1"
+                aria-label="Type your message"
               />
               <Button
+                type="submit"
                 size="sm"
-                onClick={() => handleSendMessage()}
                 disabled={!inputMessage.trim() || isTyping}
                 className="h-10 w-10 p-0"
+                aria-label="Send message"
               >
-                <Send className="h-4 w-4" />
+                <Send className="h-4 w-4" aria-hidden="true" />
               </Button>
-            </div>
+            </form>
           </div>
         </CardContent>
       </Card>

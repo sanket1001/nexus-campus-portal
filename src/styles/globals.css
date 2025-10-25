@@ -1,3 +1,11 @@
+/*
+  Group members:
+  - Badgujar, Sanket (1002233360)
+  - Bhayani, Yashbhai Bhaveshbai (1002287434)
+  - Desai, Utsav Ashokbhai (1002240489)
+  - Khan, Zaid Kaleem (1002271780)
+  - Kotari, Jayanth (1002279756)
+*/
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
 @custom-variant dark (&:is(.dark *));
@@ -15,7 +23,7 @@
   --secondary: oklch(0.95 0.0058 264.53);
   --secondary-foreground: #030213;
   --muted: #f8f9fb;
-  --muted-foreground: #6b7280;
+  --muted-foreground: #57606a;
   --accent: #e9ebef;
   --accent-foreground: #030213;
   --destructive: #ef4444;
@@ -59,7 +67,7 @@
   --secondary: #27272a;
   --secondary-foreground: #fafafa;
   --muted: #1c1c1e;
-  --muted-foreground: #9ca3af;
+  --muted-foreground: #a8adb4;
   --accent: #27272a;
   --accent-foreground: #fafafa;
   --destructive: #ef4444;
@@ -136,6 +144,36 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+  }
+
+  /* Enhanced focus indicators for accessibility - WCAG 2.1 compliant */
+  *:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  /* Skip link styles for screen readers */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .focus\:not-sr-only:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: inherit;
+    margin: inherit;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
   }
 
   body {
@@ -1486,65 +1524,5 @@ html {
     }
   }
 
-  /* Compact spacing utilities for mobile */
-  .space-y-6 > * + * {
-    margin-top: 1rem !important;
-  }
 
-  .space-y-4 > * + * {
-    margin-top: 0.75rem !important;
-  }
-
-  .gap-6 {
-    gap: 1rem !important;
-  }
-
-  .gap-4 {
-    gap: 0.75rem !important;
-  }
-
-  /* Compact padding for cards and containers on mobile */
-  .p-6 {
-    padding: 1rem !important;
-  }
-
-  .p-4 {
-    padding: 0.75rem !important;
-  }
-
-  .px-4 {
-    padding-left: 0.75rem !important;
-    padding-right: 0.75rem !important;
-  }
-
-  .py-4 {
-    padding-top: 0.75rem !important;
-    padding-bottom: 0.75rem !important;
-  }
-
-  /* Reduce avatar sizes on mobile */
-  .h-12 {
-    height: 2.5rem !important;
-  }
-
-  .w-12 {
-    width: 2.5rem !important;
-  }
-
-  .h-16 {
-    height: 3rem !important;
-  }
-
-  .w-16 {
-    width: 3rem !important;
-  }
-
-  /* Compact mobile cards */
-  [class*="CardContent"] {
-    padding: 0.75rem;
-  }
-
-  [class*="CardHeader"] {
-    padding: 0.75rem;
-  }
 }

@@ -79,11 +79,13 @@ export function EventCard({ event, onBookmark, onRSVP, variant = "grid" }: Event
                     size="sm"
                     className="h-6 w-6 p-0 flex-shrink-0"
                     onClick={() => onBookmark(event.id)}
+                    aria-label={event.isBookmarked ? "Remove bookmark" : "Add bookmark"}
                   >
                     <Heart
                       className={`h-4 w-4 ${
                         event.isBookmarked ? "fill-red-500 text-red-500" : "text-muted-foreground"
                       }`}
+                      aria-hidden="true"
                     />
                   </Button>
                 )}
@@ -135,11 +137,13 @@ export function EventCard({ event, onBookmark, onRSVP, variant = "grid" }: Event
               size="sm"
               className="absolute top-3 right-3 h-8 w-8 p-0 bg-background/80 backdrop-blur-sm hover:bg-background/90"
               onClick={() => onBookmark(event.id)}
+              aria-label={event.isBookmarked ? "Remove bookmark" : "Add bookmark"}
             >
               <Heart
                 className={`h-4 w-4 ${
                   event.isBookmarked ? "fill-red-500 text-red-500" : "text-foreground"
                 }`}
+                aria-hidden="true"
               />
             </Button>
           )}

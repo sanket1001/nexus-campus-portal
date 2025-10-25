@@ -10,19 +10,36 @@ import { BottomNav } from "./components/navigation/BottomNav";
 import { LeftNav } from "./components/navigation/LeftNav";
 import { AIAssistant } from "./components/ai/AIAssistant";
 import { Button } from "./components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "./components/ui/avatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuLabel } from "./components/ui/dropdown-menu";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "./components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenuLabel,
+} from "./components/ui/dropdown-menu";
 import { User, Building2, LogOut } from "lucide-react";
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState("home");
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [isAIAssistantOpen, setIsAIAssistantOpen] = useState(false);
-  const [currentView, setCurrentView] = useState({ screen: "home" });
+  const [isAIAssistantOpen, setIsAIAssistantOpen] =
+    useState(false);
+  const [currentView, setCurrentView] = useState({
+    screen: "home",
+  });
 
   // Initialize authentication and detect system theme preference
   useEffect(() => {
+    // Set document language for accessibility
+    document.documentElement.lang = "en";
+
     // Check authentication status
     const savedAuth = localStorage.getItem("isAuthenticated");
     if (savedAuth === "true") {
@@ -30,32 +47,43 @@ export default function App() {
     }
 
     // Detect system theme preference
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
     setIsDarkMode(prefersDark);
-    document.documentElement.classList.toggle("dark", prefersDark);
+    document.documentElement.classList.toggle(
+      "dark",
+      prefersDark,
+    );
 
     // Listen for system theme changes
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const mediaQuery = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    );
     const handleChange = (e) => {
       setIsDarkMode(e.matches);
-      document.documentElement.classList.toggle("dark", e.matches);
+      document.documentElement.classList.toggle(
+        "dark",
+        e.matches,
+      );
     };
-    
+
     mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
+    return () =>
+      mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
-    
+
     // Map tabs to screens
     const screenMap = {
       home: "home",
       discover: "discover",
       events: "events",
-      profile: "profile"
+      profile: "profile",
     };
-    
+
     setCurrentView({ screen: screenMap[tab] || "home" });
   };
 
@@ -79,32 +107,28 @@ export default function App() {
   // Mock user data - in production this would come from your auth system
   const currentUser = {
     name: "Alex Johnson",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
-    initials: "AJ"
+    avatar:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
+    initials: "AJ",
   };
 
   // Mock list of profiles the user can access (student + organizations they manage)
   const availableProfiles = [
-    { 
-      id: "student", 
-      name: "My Profile (Student)", 
+    {
+      id: "student",
+      name: "My Profile (Student)",
       type: "student",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
-      icon: User
+      avatar:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
+      icon: User,
     },
-    { 
-      id: "org1", 
-      name: "Computer Science Society", 
+    {
+      id: "org1",
+      name: "Computer Science Society",
       type: "organization",
-      avatar: "https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=300&h=300&fit=crop",
-      icon: Building2
-    },
-    { 
-      id: "org2", 
-      name: "AI Research Club", 
-      type: "organization",
-      avatar: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=300&h=300&fit=crop",
-      icon: Building2
+      avatar:
+        "https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=300&h=300&fit=crop",
+      icon: Building2,
     }
   ];
 
@@ -113,24 +137,30 @@ export default function App() {
     switch (currentView.screen) {
       case "home":
         return <HomeFeed onNavigate={handleNavigate} />;
-      
+
       case "discover":
         return <EventDiscovery />;
-      
+
       case "events":
         return <EventsScreen />;
-      
+
       case "event-detail":
         return (
-          <EventDetail 
+          <EventDetail
             eventId={currentView.data?.eventId || "1"}
-            onBack={() => handleNavigate("home")}
+            onBack={() => handleNavigate("home", undefined)}
           />
         );
-      
+
       case "profile":
-        return <UserProfile selectedProfileId={currentView.data?.profileId} activeTab={currentView.data?.activeTab} onNavigate={handleNavigate} />;
-      
+        return (
+          <UserProfile
+            selectedProfileId={currentView.data?.profileId}
+            activeTab={currentView.data?.activeTab}
+            onNavigate={handleNavigate}
+          />
+        );
+
       default:
         return <HomeFeed onNavigate={handleNavigate} />;
     }
@@ -148,48 +178,79 @@ export default function App() {
   // Show main app if authenticated
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* Skip to main content link for keyboard navigation */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md"
+      >
+        Skip to main content
+      </a>
+
       {/* Left Navigation - Desktop only */}
-      <LeftNav 
-        activeTab={activeTab} 
+      <LeftNav
+        activeTab={activeTab}
         onTabChange={handleTabChange}
       />
 
       {/* Top Right Controls */}
-      <div className="fixed top-4 right-4 z-50 flex items-center gap-3">
+      <div
+        className="fixed top-4 right-4 z-50 flex items-center gap-3"
+        role="region"
+        aria-label="User menu"
+      >
         {/* Profile Picture with Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
               className="rounded-full ring-2 ring-primary/20 hover:ring-primary/40 transition-all focus:outline-none focus:ring-primary/60"
-              title="Switch Profile"
+              aria-label="Switch Profile - Current: Alex Johnson"
+              aria-haspopup="menu"
             >
               <Avatar className="h-10 w-10">
-                <AvatarImage src={currentUser.avatar} alt={currentUser.name} />
-                <AvatarFallback>{currentUser.initials}</AvatarFallback>
+                <AvatarImage
+                  src={currentUser.avatar}
+                  alt={currentUser.name}
+                />
+                <AvatarFallback>
+                  {currentUser.initials}
+                </AvatarFallback>
               </Avatar>
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-64">
-            <DropdownMenuLabel>Switch Profile</DropdownMenuLabel>
+            <DropdownMenuLabel>
+              Switch Profile
+            </DropdownMenuLabel>
             <DropdownMenuSeparator />
             {availableProfiles.map((profile) => {
               const Icon = profile.icon;
               return (
                 <DropdownMenuItem
                   key={profile.id}
-                  onClick={() => handleNavigate("profile", { profileId: profile.id })}
+                  onClick={() =>
+                    handleNavigate("profile", {
+                      profileId: profile.id,
+                    })
+                  }
                   className="cursor-pointer"
                 >
                   <div className="flex items-center gap-3 w-full">
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src={profile.avatar} alt={profile.name} />
+                      <AvatarImage
+                        src={profile.avatar}
+                        alt={profile.name}
+                      />
                       <AvatarFallback>
                         <Icon className="h-4 w-4" />
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
-                      <div className="font-medium truncate">{profile.name}</div>
-                      <div className="text-xs text-muted-foreground capitalize">{profile.type}</div>
+                      <div className="font-medium truncate">
+                        {profile.name}
+                      </div>
+                      <div className="text-xs text-muted-foreground capitalize">
+                        {profile.type}
+                      </div>
                     </div>
                   </div>
                 </DropdownMenuItem>
@@ -210,21 +271,26 @@ export default function App() {
       </div>
 
       {/* Main Content */}
-      <div className="lg:pl-64">
+      <main id="main-content" className="lg:pl-64" role="main">
         {renderCurrentScreen()}
-      </div>
+      </main>
 
       {/* Bottom Navigation - Mobile only, hide in event detail */}
       {currentView.screen !== "event-detail" && (
         <div className="lg:hidden">
-          <BottomNav activeTab={activeTab} onTabChange={handleTabChange} />
+          <BottomNav
+            activeTab={activeTab}
+            onTabChange={handleTabChange}
+          />
         </div>
       )}
 
       {/* AI Assistant */}
-      <AIAssistant 
-        isOpen={isAIAssistantOpen} 
-        onToggle={() => setIsAIAssistantOpen(!isAIAssistantOpen)} 
+      <AIAssistant
+        isOpen={isAIAssistantOpen}
+        onToggle={() =>
+          setIsAIAssistantOpen(!isAIAssistantOpen)
+        }
       />
     </div>
   );

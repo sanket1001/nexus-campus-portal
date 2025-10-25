@@ -33,7 +33,11 @@ export function LeftNav({ activeTab, onTabChange }: LeftNavProps) {
   ];
 
   return (
-    <div className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 lg:z-40">
+    <aside 
+      className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 lg:z-40" 
+      role="navigation" 
+      aria-label="Main navigation"
+    >
       <div className="flex flex-col h-full bg-sidebar border-r border-sidebar-border">
         {/* Logo/Brand */}
         <div className="flex items-center justify-center h-20 px-6 py-4 border-b border-sidebar-border">
@@ -57,8 +61,10 @@ export function LeftNav({ activeTab, onTabChange }: LeftNavProps) {
                     : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                 )}
                 onClick={() => onTabChange(item.id)}
+                aria-label={`${item.label} - ${isActive ? 'current page' : ''}`}
+                aria-current={isActive ? 'page' : undefined}
               >
-                <Icon className="h-5 w-5" />
+                <Icon className="h-5 w-5" aria-hidden="true" />
                 <span>{item.label}</span>
               </Button>
             );
@@ -72,6 +78,6 @@ export function LeftNav({ activeTab, onTabChange }: LeftNavProps) {
           </p>
         </div>
       </div>
-    </div>
+    </aside>
   );
 }

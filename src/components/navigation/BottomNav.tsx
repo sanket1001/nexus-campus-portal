@@ -15,7 +15,11 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border">
+    <nav 
+      className="fixed bottom-0 left-0 right-0 bg-card border-t border-border z-40" 
+      role="navigation" 
+      aria-label="Main navigation"
+    >
       <div className="flex items-center justify-around py-2 px-4">
         {tabs.map((tab) => {
           const Icon = tab.icon;
@@ -32,13 +36,15 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
                   : "text-muted-foreground hover:text-foreground"
               }`}
               onClick={() => onTabChange(tab.id)}
+              aria-label={`${tab.label}${isActive ? ' - current page' : ''}`}
+              aria-current={isActive ? 'page' : undefined}
             >
-              <Icon className={`h-5 w-5 ${isActive ? "fill-current" : ""}`} />
+              <Icon className={`h-5 w-5 ${isActive ? "fill-current" : ""}`} aria-hidden="true" />
               <span className="text-xs">{tab.label}</span>
             </Button>
           );
         })}
       </div>
-    </div>
+    </nav>
   );
 }

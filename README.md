@@ -12,16 +12,6 @@ Nexus Campus Portal is a comprehensive React-based web application designed to r
 - **Khan, Zaid Kaleem (1002271780)**
 - **Kotari, Jayanth (1002279756)**
 
-## 🚀 Technology Stack
-
-- **Frontend**: React 18 with TypeScript
-- **Build Tool**: Vite for fast development and optimized builds
-- **Styling**: Tailwind CSS with custom component library
-- **UI Components**: Radix UI primitives for accessibility and consistency
-- **Icons**: Lucide React for beautiful, consistent iconography
-- **State Management**: React hooks and context for efficient state handling
-- **Form Handling**: React Hook Form for robust form management
-
 ## 🛠️ Getting Started
 
 ### Prerequisites
