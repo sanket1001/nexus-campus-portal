@@ -33,6 +33,12 @@ Nexus Campus Portal is a comprehensive React-based web application designed to r
 - Node.js (version 16 or higher)
 - npm or yarn package manager
 
+### Version tested on
+
+- Node: 24.9.0
+- React: 18.3.1
+- npm version: 11.6.0
+
 ### Installation
 
 1. Clone the repository:
@@ -72,9 +78,9 @@ src/
 └── guidelines/          # Project guidelines and documentation
 ```
 
-## 🎨 Design
+## 🎨 External reference
 
-This project is based on a comprehensive Figma design system, ensuring pixel-perfect implementation and consistent user experience across all components. The original design is available at: https://www.figma.com/design/eEPFlaKxs2BVcBEmJT9KF4/Social-Media-Events-App
+https://www.figma.com
 
 ---
 
