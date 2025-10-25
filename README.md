@@ -14,6 +14,10 @@ Nexus Campus Portal is a comprehensive React-based web application designed to r
 
 ## 🛠️ Getting Started
 
+### Website hosted on
+
+- **[sxb3360@uta.cloud](https://sxb3360.uta.cloud)**
+
 ### Prerequisites
 
 - Node.js (version 16 or higher)
