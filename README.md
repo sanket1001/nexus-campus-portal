@@ -6,11 +6,11 @@
 Nexus Campus Portal is a comprehensive React-based web application designed to revolutionize how students discover, engage with, and participate in campus events. Built with modern web technologies, this platform creates a vibrant digital ecosystem that connects students, organizations, and campus activities in one intuitive space.
 
 ## 🧑‍🎓 Team Members
-- **Badgujar, Sanket (1002233360)
-- **Bhayani, Yashbhai Bhaveshbai (1002287434)
-- **Desai, Utsav Ashokbhai (1002240489)
-- **Khan, Zaid Kaleem (1002271780)
-- **Kotari, Jayanth (1002279756)
+- **Badgujar, Sanket (1002233360)**
+- **Bhayani, Yashbhai Bhaveshbai (1002287434)**
+- **Desai, Utsav Ashokbhai (1002240489)**
+- **Khan, Zaid Kaleem (1002271780)**
+- **Kotari, Jayanth (1002279756)**
 
 ## 🚀 Technology Stack
 
@@ -37,7 +37,7 @@ Nexus Campus Portal is a comprehensive React-based web application designed to r
 
 ### Installation
 
-1. Unzip the file:
+1. Unzip the **Badgujar_Bhayani_Desai_KhanKotari.zip** file and go the **nexus** folder:
 ```bash
 cd nexus
 ```
