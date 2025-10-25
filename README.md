@@ -27,7 +27,7 @@ Nexus Campus Portal is a comprehensive React-based web application designed to r
 
 ### Installation
 
-1. Unzip the **Badgujar_Bhayani_Desai_KhanKotari.zip** file and go the **nexus** folder:
+1. Unzip the **Badgujar_Bhayani_Desai_Khan_Kotari.zip** file and go the **nexus** folder:
 ```bash
 cd nexus
 ```
