@@ -5,16 +5,12 @@
 
 Nexus Campus Portal is a comprehensive React-based web application designed to revolutionize how students discover, engage with, and participate in campus events. Built with modern web technologies, this platform creates a vibrant digital ecosystem that connects students, organizations, and campus activities in one intuitive space.
 
-## ✨ Features
-
-- **Event Discovery**: Browse and discover campus events with advanced filtering and search capabilities
-- **Real-time Feed**: Stay updated with the latest campus activities and announcements
-- **Student Profiles**: Create and customize personal profiles to connect with peers
-- **Organization Hub**: Campus organizations can showcase their events and activities
-- **Interactive Messaging**: Connect and communicate with other students and organizations
-- **AI Assistant**: Get personalized recommendations and assistance for campus activities
-- **Responsive Design**: Seamless experience across desktop and mobile devices
-- **Dark/Light Mode**: Customizable theme preferences for optimal user experience
+## 🧑‍🎓 Team Members
+- **Badgujar, Sanket (1002233360)
+- **Bhayani, Yashbhai Bhaveshbai (1002287434)
+- **Desai, Utsav Ashokbhai (1002240489)
+- **Khan, Zaid Kaleem (1002271780)
+- **Kotari, Jayanth (1002279756)
 
 ## 🚀 Technology Stack
 
@@ -40,6 +36,12 @@ Nexus Campus Portal is a comprehensive React-based web application designed to r
 - npm version: 11.6.0
 
 ### Installation
+
+1. Unzip the file:
+```bash
+cd nexus
+```
+OR
 
 1. Clone the repository:
 ```bash
@@ -74,13 +76,14 @@ src/
 │   ├── navigation/      # Navigation components
 │   ├── screens/         # Main application screens
 │   └── ui/              # Base UI component library
-├── styles/              # Global styles and CSS
-└── guidelines/          # Project guidelines and documentation
+└── styles/              # Global styles and CSS
 ```
 
 ## 🎨 External reference
 
 https://www.figma.com
+[shadcn/ui](https://ui.shadcn.com/) used under [MIT license](https://github.com/shadcn-ui/ui/blob/main/LICENSE.md).
+Photos from [Unsplash](https://unsplash.com) used under [license](https://unsplash.com/license).
 
 ---
 
