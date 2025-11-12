@@ -7,6 +7,7 @@ import { EventDiscovery } from "./components/screens/EventDiscovery";
 import { EventsScreen } from "./components/screens/EventsScreen";
 import { EventDetail } from "./components/screens/EventDetail";
 import { UserProfile } from "./components/screens/UserProfile";
+import { AdminScreen } from "./components/screens/AdminScreen";
 import { BottomNav } from "./components/navigation/BottomNav";
 import { LeftNav } from "./components/navigation/LeftNav";
 import { AIAssistant } from "./components/ai/AIAssistant";
@@ -25,7 +26,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuLabel,
 } from "./components/ui/dropdown-menu";
-import { User, Building2, LogOut, Info } from "lucide-react";
+import { User, Building2, LogOut, Info, Shield } from "lucide-react";
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -38,6 +39,7 @@ export default function App() {
   const [currentView, setCurrentView] = useState({
     screen: "home",
   });
+  const [isAdmin, setIsAdmin] = useState(false);
 
   // Initialize authentication and detect system theme preference
   useEffect(() => {
@@ -46,8 +48,10 @@ export default function App() {
 
     // Check authentication status
     const savedAuth = localStorage.getItem("isAuthenticated");
+    const savedAdminStatus = localStorage.getItem("isAdmin");
     if (savedAuth === "true") {
       setIsAuthenticated(true);
+      setIsAdmin(savedAdminStatus === "true");
     }
 
     // Detect system theme preference
@@ -86,19 +90,24 @@ export default function App() {
       discover: "discover",
       events: "events",
       profile: "profile",
+      admin: "admin",
     };
 
     setCurrentView({ screen: screenMap[tab] || "home" });
   };
 
-  const handleLogin = () => {
+  const handleLogin = (adminStatus: boolean) => {
     setIsAuthenticated(true);
+    setIsAdmin(adminStatus);
     localStorage.setItem("isAuthenticated", "true");
+    localStorage.setItem("isAdmin", adminStatus.toString());
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
+    setIsAdmin(false);
     localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("isAdmin");
     // Reset app state when logging out
     setActiveTab("home");
     setCurrentView({ screen: "home" });
@@ -110,10 +119,11 @@ export default function App() {
 
   // Mock user data - in production this would come from your auth system
   const currentUser = {
-    name: "Alex Johnson",
+    name: isAdmin ? "Admin" : "Alex Johnson",
     avatar:
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
-    initials: "AJ",
+    initials: isAdmin ? "AD" : "AJ",
+    isAdmin: isAdmin,
   };
 
   // Mock list of profiles the user can access (student + organizations they manage)
@@ -164,6 +174,9 @@ export default function App() {
             onNavigate={handleNavigate}
           />
         );
+
+      case "admin":
+        return <AdminScreen />;
 
       default:
         return <HomeFeed onNavigate={handleNavigate} />;
@@ -274,6 +287,20 @@ export default function App() {
               );
             })}
             <DropdownMenuSeparator />
+            {currentUser.isAdmin && (
+              <>
+                <DropdownMenuItem
+                  onClick={() => handleNavigate("admin")}
+                  className="cursor-pointer"
+                >
+                  <div className="flex items-center gap-3 w-full">
+                    <Shield className="h-4 w-4 text-primary" />
+                    <span>Admin Panel</span>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+              </>
+            )}
             <DropdownMenuItem
               onClick={() => setShowAboutDialog(true)}
               className="cursor-pointer"

@@ -38,7 +38,7 @@ import {
 import { NexusLogo } from "../common/NexusLogo";
 
 interface StartPageProps {
-  onLogin: () => void;
+  onLogin: (isAdmin: boolean) => void;
   onForgotPassword: () => void;
 }
 
@@ -74,9 +74,16 @@ export function StartPage({ onLogin, onForgotPassword }: StartPageProps) {
     e.preventDefault();
     setIsLoading(true);
     
+    // Get form data
+    const formData = new FormData(e.target as HTMLFormElement);
+    const username = formData.get('username') as string;
+    const password = formData.get('password') as string;
+    
     setTimeout(() => {
       setIsLoading(false);
-      onLogin();
+      // Check if admin credentials
+      const isAdmin = username === 'admin' && password === 'admin';
+      onLogin(isAdmin);
     }, 1500);
   };
 
@@ -171,6 +178,7 @@ export function StartPage({ onLogin, onForgotPassword }: StartPageProps) {
                       </Label>
                       <Input
                         id="username"
+                        name="username"
                         type="text"
                         placeholder="Enter your username"
                         required
@@ -185,6 +193,7 @@ export function StartPage({ onLogin, onForgotPassword }: StartPageProps) {
                       <div className="relative">
                         <Input
                           id="password"
+                          name="password"
                           type={showPassword ? "text" : "password"}
                           placeholder="Enter your password"
                           required
