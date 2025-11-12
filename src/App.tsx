@@ -1,6 +1,7 @@
 import "./styles/globals.css";
 import { useState, useEffect } from "react";
 import { StartPage } from "./components/screens/StartPage";
+import { ForgotPassword } from "./components/screens/ForgotPassword";
 import { HomeFeed } from "./components/screens/HomeFeed";
 import { EventDiscovery } from "./components/screens/EventDiscovery";
 import { EventsScreen } from "./components/screens/EventsScreen";
@@ -9,6 +10,7 @@ import { UserProfile } from "./components/screens/UserProfile";
 import { BottomNav } from "./components/navigation/BottomNav";
 import { LeftNav } from "./components/navigation/LeftNav";
 import { AIAssistant } from "./components/ai/AIAssistant";
+import { AboutDialog } from "./components/common/AboutDialog";
 import { Button } from "./components/ui/button";
 import {
   Avatar,
@@ -23,10 +25,12 @@ import {
   DropdownMenuTrigger,
   DropdownMenuLabel,
 } from "./components/ui/dropdown-menu";
-import { User, Building2, LogOut } from "lucide-react";
+import { User, Building2, LogOut, Info } from "lucide-react";
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [showAboutDialog, setShowAboutDialog] = useState(false);
   const [activeTab, setActiveTab] = useState("home");
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isAIAssistantOpen, setIsAIAssistantOpen] =
@@ -148,7 +152,7 @@ export default function App() {
         return (
           <EventDetail
             eventId={currentView.data?.eventId || "1"}
-            onBack={() => handleNavigate("home", undefined)}
+            onBack={() => handleNavigate("home")}
           />
         );
 
@@ -168,9 +172,22 @@ export default function App() {
 
   // Show start page if not authenticated
   if (!isAuthenticated) {
+    // Show forgot password screen
+    if (showForgotPassword) {
+      return (
+        <div className="min-h-screen bg-background text-foreground">
+          <ForgotPassword onBack={() => setShowForgotPassword(false)} />
+        </div>
+      );
+    }
+    
+    // Show login/signup screen
     return (
       <div className="min-h-screen bg-background text-foreground">
-        <StartPage onLogin={handleLogin} />
+        <StartPage 
+          onLogin={handleLogin} 
+          onForgotPassword={() => setShowForgotPassword(true)}
+        />
       </div>
     );
   }
@@ -258,6 +275,16 @@ export default function App() {
             })}
             <DropdownMenuSeparator />
             <DropdownMenuItem
+              onClick={() => setShowAboutDialog(true)}
+              className="cursor-pointer"
+            >
+              <div className="flex items-center gap-3 w-full">
+                <Info className="h-4 w-4" />
+                <span>About Nexus</span>
+              </div>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
               onClick={handleLogout}
               className="cursor-pointer text-destructive focus:text-destructive"
             >
@@ -291,6 +318,12 @@ export default function App() {
         onToggle={() =>
           setIsAIAssistantOpen(!isAIAssistantOpen)
         }
+      />
+
+      {/* About Dialog */}
+      <AboutDialog 
+        isOpen={showAboutDialog}
+        onClose={() => setShowAboutDialog(false)}
       />
     </div>
   );

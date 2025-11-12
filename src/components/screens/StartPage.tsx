@@ -39,9 +39,10 @@ import { NexusLogo } from "../common/NexusLogo";
 
 interface StartPageProps {
   onLogin: () => void;
+  onForgotPassword: () => void;
 }
 
-export function StartPage({ onLogin }: StartPageProps) {
+export function StartPage({ onLogin, onForgotPassword }: StartPageProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
@@ -226,6 +227,7 @@ export function StartPage({ onLogin }: StartPageProps) {
                     <div className="text-center">
                       <button
                         type="button"
+                        onClick={onForgotPassword}
                         className="text-sm text-primary hover:text-primary/80 transition-colors font-medium underline-offset-4 hover:underline"
                       >
                         Forgot password?

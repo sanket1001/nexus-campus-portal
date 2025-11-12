@@ -4,7 +4,7 @@ import { Input } from "../ui/input";
 import { EventCard } from "../common/EventCard";
 import { Badge } from "../ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { Search, Grid3X3, List, Calendar, MapPin, Filter } from "lucide-react";
+import { Search, Grid3X3, List, Calendar, MapPin, Filter, Check, CheckCheck } from "lucide-react";
 
 export function EventsScreen() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -12,6 +12,7 @@ export function EventsScreen() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedDate, setSelectedDate] = useState("all");
   const [selectedLocation, setSelectedLocation] = useState("all");
+  const [showGoingOnly, setShowGoingOnly] = useState(false);
 
   const categories = ["all", "Academic", "Sports", "Arts", "Greek Life", "Service", "Cultural"];
   const dateFilters = ["all", "today", "tomorrow", "this-week", "this-month"];
@@ -202,11 +203,14 @@ export function EventsScreen() {
                          event.organizer.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          event.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          event.location.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "all" || event.category === selectedCategory;
+    const matchesCategory = 
+      selectedCategory === "all" ? true :
+      event.category === selectedCategory;
     const matchesDate = matchesDateFilter(event);
     const matchesLocation = selectedLocation === "all" || event.location.toLowerCase().includes(selectedLocation.toLowerCase());
+    const matchesGoing = !showGoingOnly || event.isRSVPd;
     
-    return matchesSearch && matchesCategory && matchesDate && matchesLocation;
+    return matchesSearch && matchesCategory && matchesDate && matchesLocation && matchesGoing;
   });
 
   const handleBookmark = (eventId: string) => {
@@ -257,16 +261,30 @@ export function EventsScreen() {
 
           {/* Category Filter */}
           <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <Filter className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm font-medium text-muted-foreground">Categories</span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Filter className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-medium text-muted-foreground">Categories</span>
+              </div>
+              {/* Going Filter Toggle */}
+              <Button
+                variant={showGoingOnly ? "default" : "outline"}
+                size="sm"
+                className={`h-8 gap-2 ${
+                  showGoingOnly ? "bg-primary text-primary-foreground" : ""
+                }`}
+                onClick={() => setShowGoingOnly(!showGoingOnly)}
+              >
+                <CheckCheck className="w-4 h-4" aria-hidden="true" />
+                <span>Going</span>
+              </Button>
             </div>
             <div className="flex gap-2 overflow-x-auto pb-1">
               {categories.map((category) => (
                 <Badge
                   key={category}
                   variant={selectedCategory === category ? "default" : "secondary"}
-                  className={`cursor-pointer whitespace-nowrap ${
+                  className={`cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
                     selectedCategory === category ? "bg-primary text-primary-foreground" : ""
                   }`}
                   onClick={() => setSelectedCategory(category)}
@@ -333,7 +351,7 @@ export function EventsScreen() {
             <p className="text-sm text-muted-foreground">
               {filteredEvents.length} events found
             </p>
-            {(selectedCategory !== "all" || selectedDate !== "all" || selectedLocation !== "all") && (
+            {(selectedCategory !== "all" || selectedDate !== "all" || selectedLocation !== "all" || showGoingOnly) && (
               <Button
                 variant="ghost"
                 size="sm"
@@ -342,6 +360,7 @@ export function EventsScreen() {
                   setSelectedCategory("all");
                   setSelectedDate("all");
                   setSelectedLocation("all");
+                  setShowGoingOnly(false);
                 }}
               >
                 Clear filters
