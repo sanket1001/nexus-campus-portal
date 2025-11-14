@@ -156,7 +156,7 @@ export default function App() {
         return <EventDiscovery />;
 
       case "events":
-        return <EventsScreen />;
+        return <EventsScreen onNavigate={handleNavigate} />;
 
       case "event-detail":
         return (
@@ -171,6 +171,17 @@ export default function App() {
           <UserProfile
             selectedProfileId={currentView.data?.profileId}
             activeTab={currentView.data?.activeTab}
+            onNavigate={handleNavigate}
+          />
+        );
+
+      case "organizationProfile":
+        // Handle organization profile navigation by name
+        // Map organization name to profile ID
+        return (
+          <UserProfile
+            selectedProfileId="org1"
+            activeTab="posts"
             onNavigate={handleNavigate}
           />
         );

@@ -1,4 +1,4 @@
-import { Calendar, MapPin, Users, Heart } from "lucide-react";
+import { Calendar, MapPin, Users, Heart, Building2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
@@ -17,13 +17,15 @@ interface EventCardProps {
     price: string;
     isBookmarked: boolean;
     isRSVPd?: boolean;
+    organizer?: string;
   };
   onBookmark?: (eventId: string) => void;
   onRSVP?: (eventId: string) => void;
+  onOrganizerClick?: (organizerName: string) => void;
   variant?: "grid" | "list" | "feed";
 }
 
-export function EventCard({ event, onBookmark, onRSVP, variant = "grid" }: EventCardProps) {
+export function EventCard({ event, onBookmark, onRSVP, onOrganizerClick, variant = "grid" }: EventCardProps) {
   if (variant === "feed") {
     return (
       <Card className="mb-3 border-0 shadow-sm">
@@ -43,6 +45,15 @@ export function EventCard({ event, onBookmark, onRSVP, variant = "grid" }: Event
                   {event.category}
                 </Badge>
               </div>
+              {event.organizer && (
+                <button 
+                  onClick={() => onOrganizerClick?.(event.organizer!)}
+                  className="flex items-center gap-2 mb-1 hover:bg-muted/50 rounded px-1 -mx-1 py-0.5 transition-colors group"
+                >
+                  <Building2 className="h-3 w-3 text-primary" />
+                  <span className="text-xs text-primary group-hover:underline cursor-pointer">{event.organizer}</span>
+                </button>
+              )}
               <div className="flex items-center gap-2 mb-1">
                 <Calendar className="h-3 w-3 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">{event.date} • {event.time}</span>
@@ -90,6 +101,15 @@ export function EventCard({ event, onBookmark, onRSVP, variant = "grid" }: Event
                   </Button>
                 )}
               </div>
+              {event.organizer && (
+                <button 
+                  onClick={() => onOrganizerClick?.(event.organizer!)}
+                  className="flex items-center gap-2 mb-1 hover:bg-muted/50 rounded px-1 -mx-1 py-0.5 transition-colors group"
+                >
+                  <Building2 className="h-3 w-3 text-primary" />
+                  <span className="text-xs text-primary group-hover:underline cursor-pointer">{event.organizer}</span>
+                </button>
+              )}
               <div className="flex items-center gap-2 mb-1">
                 <Calendar className="h-3 w-3 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">{event.date} • {event.time}</span>
@@ -151,6 +171,16 @@ export function EventCard({ event, onBookmark, onRSVP, variant = "grid" }: Event
         
         <div className="p-4">
           <h3 className="font-medium mb-2 line-clamp-2">{event.title}</h3>
+          
+          {event.organizer && (
+            <button 
+              onClick={() => onOrganizerClick?.(event.organizer!)}
+              className="flex items-center gap-2 mb-2 hover:bg-muted/50 rounded px-1 -mx-1 py-0.5 transition-colors group w-fit"
+            >
+              <Building2 className="h-4 w-4 text-primary" />
+              <span className="text-sm text-primary group-hover:underline cursor-pointer">{event.organizer}</span>
+            </button>
+          )}
           
           <div className="flex items-center gap-2 mb-2">
             <Calendar className="h-4 w-4 text-muted-foreground" />

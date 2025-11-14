@@ -6,7 +6,11 @@ import { Badge } from "../ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Search, Grid3X3, List, Calendar, MapPin, Filter, Check, CheckCheck } from "lucide-react";
 
-export function EventsScreen() {
+interface EventsScreenProps {
+  onNavigate?: (screen: string, data?: any) => void;
+}
+
+export function EventsScreen({ onNavigate }: EventsScreenProps) {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -229,6 +233,14 @@ export function EventsScreen() {
     ));
   };
 
+  const handleOrganizerClick = (organizerName: string) => {
+    // Navigate to organization profile
+    // We'll use the existing profile system but pass the organization name
+    if (onNavigate) {
+      onNavigate('organizationProfile', { organizationName: organizerName });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background pb-20">
       {/* Header */}
@@ -377,6 +389,7 @@ export function EventsScreen() {
                 event={event}
                 onBookmark={handleBookmark}
                 onRSVP={handleRSVP}
+                onOrganizerClick={handleOrganizerClick}
                 variant="grid"
               />
             ))}
@@ -389,6 +402,7 @@ export function EventsScreen() {
                 event={event}
                 onBookmark={handleBookmark}
                 onRSVP={handleRSVP}
+                onOrganizerClick={handleOrganizerClick}
                 variant="list"
               />
             ))}

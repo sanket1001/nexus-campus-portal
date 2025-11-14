@@ -24,7 +24,29 @@ export function HomeFeed({ onNavigate }: HomeFeedProps) {
       timestamp: "2h",
       likes: 156,
       comments: 23,
-      isLiked: false
+      isLiked: false,
+      commentsList: [
+        {
+          id: "c1",
+          user: {
+            name: "Emily Rodriguez",
+            avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop",
+            username: "emily_r"
+          },
+          content: "This is amazing! Finally can study late 🙏",
+          timestamp: "1h ago"
+        },
+        {
+          id: "c2",
+          user: {
+            name: "David Kim",
+            avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop",
+            username: "david_kim"
+          },
+          content: "Best news all week! Thank you Student Gov! 📚",
+          timestamp: "45m ago"
+        }
+      ]
     },
     {
       id: "2",
@@ -37,7 +59,29 @@ export function HomeFeed({ onNavigate }: HomeFeedProps) {
       timestamp: "3h",
       likes: 89,
       comments: 31,
-      isLiked: true
+      isLiked: true,
+      commentsList: [
+        {
+          id: "c3",
+          user: {
+            name: "Marcus Johnson",
+            avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop",
+            username: "marcus_j"
+          },
+          content: "You got this Sarah! 🚀",
+          timestamp: "2h ago"
+        },
+        {
+          id: "c4",
+          user: {
+            name: "Jessica Taylor",
+            avatar: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=150&h=150&fit=crop",
+            username: "jess_t"
+          },
+          content: "Good luck! Let us know how it goes!",
+          timestamp: "2h ago"
+        }
+      ]
     },
     {
       id: "3", 
@@ -50,7 +94,19 @@ export function HomeFeed({ onNavigate }: HomeFeedProps) {
       timestamp: "4h",
       likes: 142,
       comments: 28,
-      isLiked: false
+      isLiked: false,
+      commentsList: [
+        {
+          id: "c5",
+          user: {
+            name: "Alex Thompson",
+            avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&h=150&fit=crop",
+            username: "alex_t"
+          },
+          content: "Can't wait for this! Tesla is doing amazing work 🚗⚡",
+          timestamp: "3h ago"
+        }
+      ]
     },
     {
       id: "4",
@@ -64,7 +120,8 @@ export function HomeFeed({ onNavigate }: HomeFeedProps) {
       timestamp: "6h",
       likes: 234,
       comments: 45,
-      isLiked: true
+      isLiked: true,
+      commentsList: []
     },
     {
       id: "5",
@@ -77,7 +134,8 @@ export function HomeFeed({ onNavigate }: HomeFeedProps) {
       timestamp: "8h",
       likes: 67,
       comments: 18,
-      isLiked: false
+      isLiked: false,
+      commentsList: []
     }
   ]);
 
@@ -173,8 +231,49 @@ export function HomeFeed({ onNavigate }: HomeFeedProps) {
     console.log("Comment on post:", postId);
   };
 
+  const handleAddComment = (postId: string, commentText: string) => {
+    setPosts(prev => prev.map(post => {
+      if (post.id === postId) {
+        const newComment = {
+          id: `c${Date.now()}`,
+          user: {
+            name: "Alex Johnson",
+            avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
+            username: "alex_j"
+          },
+          content: commentText,
+          timestamp: "Just now"
+        };
+        return {
+          ...post,
+          comments: post.comments + 1,
+          commentsList: [...(post.commentsList || []), newComment]
+        };
+      }
+      return post;
+    }));
+  };
+
   const handleShare = (postId: string) => {
     console.log("Share post:", postId);
+  };
+
+  const handleUserClick = (username: string, userType: 'student' | 'organization') => {
+    // Map username to profile ID
+    // In a real app, this would be a database lookup
+    const profileMapping: Record<string, string> = {
+      'studentgov': 'org1',
+      'engsociety': 'org1',
+      'campusrec': 'org1',
+      'sarahc_22': 'student',
+      'marcus_j': 'student',
+      'alex_j': 'student'
+    };
+
+    const profileId = profileMapping[username] || (userType === 'organization' ? 'org1' : 'student');
+    
+    // Navigate to profile
+    onNavigate?.("profile", { profileId });
   };
 
   const handleRSVP = (eventId: string) => {
@@ -274,7 +373,9 @@ export function HomeFeed({ onNavigate }: HomeFeedProps) {
               post={post}
               onLike={handleLike}
               onComment={handleComment}
+              onAddComment={handleAddComment}
               onShare={handleShare}
+              onUserClick={handleUserClick}
             />
           ))}
 
@@ -307,7 +408,9 @@ export function HomeFeed({ onNavigate }: HomeFeedProps) {
               post={post}
               onLike={handleLike}
               onComment={handleComment}
+              onAddComment={handleAddComment}
               onShare={handleShare}
+              onUserClick={handleUserClick}
             />
           ))}
         </div>
