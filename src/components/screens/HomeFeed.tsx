@@ -1,16 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { PostCard } from "../common/PostCard";
 import { EventCard } from "../common/EventCard";
 import { Search, Bell, Star } from "lucide-react";
 import { ImageWithFallback } from "../figma/ImageWithFallback";
+import { LoadingSpinner } from "../common/LoadingSpinner";
+import { SkeletonPostCard, SkeletonBigEventCard } from "../common/SkeletonCard";
 
 interface HomeFeedProps {
   onNavigate?: (screen: string, data?: any) => void;
 }
 
 export function HomeFeed({ onNavigate }: HomeFeedProps) {
+  const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState([
     {
       id: "1",
@@ -296,6 +299,14 @@ export function HomeFeed({ onNavigate }: HomeFeedProps) {
     onNavigate?.("event-detail", { eventId });
   };
 
+  useEffect(() => {
+    // Simulate loading delay
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="min-h-screen bg-background pb-20">
       {/* Header */}
@@ -367,17 +378,24 @@ export function HomeFeed({ onNavigate }: HomeFeedProps) {
         {/* Campus Feed */}
         <div className="p-4 space-y-6">
           {/* Recent Posts */}
-          {posts.slice(0, 2).map((post) => (
-            <PostCard
-              key={post.id}
-              post={post}
-              onLike={handleLike}
-              onComment={handleComment}
-              onAddComment={handleAddComment}
-              onShare={handleShare}
-              onUserClick={handleUserClick}
-            />
-          ))}
+          {isLoading ? (
+            <>
+              <SkeletonPostCard />
+              <SkeletonPostCard />
+            </>
+          ) : (
+            posts.slice(0, 2).map((post) => (
+              <PostCard
+                key={post.id}
+                post={post}
+                onLike={handleLike}
+                onComment={handleComment}
+                onAddComment={handleAddComment}
+                onShare={handleShare}
+                onUserClick={handleUserClick}
+              />
+            ))
+          )}
 
           {/* Recommended Events Section */}
           <div className="space-y-4">
@@ -402,17 +420,24 @@ export function HomeFeed({ onNavigate }: HomeFeedProps) {
           </div>
 
           {/* More Posts */}
-          {posts.slice(2).map((post) => (
-            <PostCard
-              key={post.id}
-              post={post}
-              onLike={handleLike}
-              onComment={handleComment}
-              onAddComment={handleAddComment}
-              onShare={handleShare}
-              onUserClick={handleUserClick}
-            />
-          ))}
+          {isLoading ? (
+            <>
+              <SkeletonPostCard />
+              <SkeletonPostCard />
+            </>
+          ) : (
+            posts.slice(2).map((post) => (
+              <PostCard
+                key={post.id}
+                post={post}
+                onLike={handleLike}
+                onComment={handleComment}
+                onAddComment={handleAddComment}
+                onShare={handleShare}
+                onUserClick={handleUserClick}
+              />
+            ))
+          )}
         </div>
       </div>
     </div>

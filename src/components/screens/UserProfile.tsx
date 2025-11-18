@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
@@ -10,6 +10,8 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { LoadingSpinner } from "../common/LoadingSpinner";
+import { SkeletonProfileHeader, SkeletonPostCard } from "../common/SkeletonCard";
 import { 
   Settings, 
   MapPin, 
@@ -40,6 +42,7 @@ interface UserProfileProps {
 }
 
 export function UserProfile({ selectedProfileId = "student", activeTab = "about", onNavigate }: UserProfileProps) {
+  const [isLoading, setIsLoading] = useState(true);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editFormData, setEditFormData] = useState({
     bio: "",
@@ -337,6 +340,15 @@ export function UserProfile({ selectedProfileId = "student", activeTab = "about"
   
   // Get current profile data based on type
   const currentProfile = profileType === "student" ? studentProfile : organizationProfile;
+
+  // Simulate loading delay
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, [selectedProfileId]);
 
   // Open edit dialog and populate form with current data
   const handleEditProfile = () => {
@@ -682,6 +694,20 @@ export function UserProfile({ selectedProfileId = "student", activeTab = "about"
       alert("Post deleted successfully!");
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background pb-20 lg:pb-8">
+        <div className="max-w-5xl mx-auto px-4 pt-4">
+          <SkeletonProfileHeader />
+          <div className="mt-6 space-y-4">
+            <SkeletonPostCard />
+            <SkeletonPostCard />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background pb-20 lg:pb-8">

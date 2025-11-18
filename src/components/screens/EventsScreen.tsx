@@ -1,16 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { EventCard } from "../common/EventCard";
 import { Badge } from "../ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Search, Grid3X3, List, Calendar, MapPin, Filter, Check, CheckCheck } from "lucide-react";
+import { SkeletonEventCard } from "../common/SkeletonCard";
 
 interface EventsScreenProps {
   onNavigate?: (screen: string, data?: any) => void;
 }
 
 export function EventsScreen({ onNavigate }: EventsScreenProps) {
+  const [isLoading, setIsLoading] = useState(true);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -174,6 +176,14 @@ export function EventsScreen({ onNavigate }: EventsScreenProps) {
       description: "See cutting-edge student projects in AI, robotics, and software development. Network with tech industry professionals."
     }
   ]);
+
+  useEffect(() => {
+    // Simulate loading delay
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Helper function to check if event matches date filter
   const matchesDateFilter = (event: any) => {
@@ -381,7 +391,13 @@ export function EventsScreen({ onNavigate }: EventsScreenProps) {
           </div>
         </div>
 
-        {viewMode === "grid" ? (
+        {isLoading ? (
+          <div className="grid grid-cols-1 gap-4">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <SkeletonEventCard key={index} />
+            ))}
+          </div>
+        ) : viewMode === "grid" ? (
           <div className="grid grid-cols-1 gap-4">
             {filteredEvents.map((event) => (
               <EventCard
