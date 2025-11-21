@@ -2,6 +2,7 @@ import "./styles/globals.css";
 import { useState, useEffect } from "react";
 import { StartPage } from "./components/screens/StartPage";
 import { ForgotPassword } from "./components/screens/ForgotPassword";
+import { ResetPassword } from "./components/screens/ResetPassword";
 import { HomeFeed } from "./components/screens/HomeFeed";
 import { EventDiscovery } from "./components/screens/EventDiscovery";
 import { EventsScreen } from "./components/screens/EventsScreen";
@@ -31,6 +32,7 @@ import { User, Building2, LogOut, Info, Shield } from "lucide-react";
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [showResetPassword, setShowResetPassword] = useState(false);
   const [showAboutDialog, setShowAboutDialog] = useState(false);
   const [activeTab, setActiveTab] = useState("home");
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -196,11 +198,35 @@ export default function App() {
 
   // Show start page if not authenticated
   if (!isAuthenticated) {
+    // Show reset password screen
+    if (showResetPassword) {
+      return (
+        <div className="min-h-screen bg-background text-foreground">
+          <ResetPassword 
+            onBack={() => {
+              setShowResetPassword(false);
+              setShowForgotPassword(false);
+            }}
+            onSuccess={() => {
+              setShowResetPassword(false);
+              setShowForgotPassword(false);
+            }}
+          />
+        </div>
+      );
+    }
+    
     // Show forgot password screen
     if (showForgotPassword) {
       return (
         <div className="min-h-screen bg-background text-foreground">
-          <ForgotPassword onBack={() => setShowForgotPassword(false)} />
+          <ForgotPassword 
+            onBack={() => setShowForgotPassword(false)}
+            onResetLink={() => {
+              setShowForgotPassword(false);
+              setShowResetPassword(true);
+            }}
+          />
         </div>
       );
     }
