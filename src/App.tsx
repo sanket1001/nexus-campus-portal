@@ -257,6 +257,7 @@ export default function App() {
       <LeftNav
         activeTab={activeTab}
         onTabChange={handleTabChange}
+        isAdmin={isAdmin}
       />
 
       {/* Top Right Controls */}
@@ -372,6 +373,7 @@ export default function App() {
           <BottomNav
             activeTab={activeTab}
             onTabChange={handleTabChange}
+            isAdmin={isAdmin}
           />
         </div>
       )}

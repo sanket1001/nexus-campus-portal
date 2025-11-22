@@ -324,7 +324,8 @@ export function UserProfile({ selectedProfileId = "student", activeTab = "about"
         time: "6:00 PM",
         location: "Library Room 204",
         attendees: 23,
-        image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=300&h=200&fit=crop"
+        image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=300&h=200&fit=crop",
+        status: "approved"
       },
       {
         id: "2",
@@ -333,7 +334,8 @@ export function UserProfile({ selectedProfileId = "student", activeTab = "about"
         time: "4:00 PM",
         location: "Engineering Building Atrium",
         attendees: 289,
-        image: "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=300&h=200&fit=crop"
+        image: "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=300&h=200&fit=crop",
+        status: "pending"
       }
     ],
 
@@ -573,7 +575,8 @@ export function UserProfile({ selectedProfileId = "student", activeTab = "about"
     // In a real app, this would send data to the database
     const eventData = {
       ...createEventFormData,
-      imageUrl: eventImagePreview || createEventFormData.imageUrl
+      imageUrl: eventImagePreview || createEventFormData.imageUrl,
+      status: "pending" // New events need approval
     };
     console.log("Creating event:", eventData);
     
@@ -593,7 +596,7 @@ export function UserProfile({ selectedProfileId = "student", activeTab = "about"
     setIsCreateEventDialogOpen(false);
     
     // Show success message (in real app, would handle success/error from API)
-    alert("Event created successfully!");
+    alert("Event created successfully! Your event is pending approval and will be visible once approved by an administrator.");
   };
 
   // Handle open edit event dialog
@@ -1413,7 +1416,19 @@ export function UserProfile({ selectedProfileId = "student", activeTab = "about"
                       <div className="p-4">
                         <div className="flex items-start justify-between gap-4 mb-3">
                           <div className="flex-1">
-                            <h3 className="font-semibold mb-2 line-clamp-2">{event.title}</h3>
+                            <div className="flex items-center gap-2 mb-2 flex-wrap">
+                              <h3 className="font-semibold line-clamp-2">{event.title}</h3>
+                              {event.status === "pending" && (
+                                <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300 dark:bg-yellow-900/20 dark:text-yellow-500 dark:border-yellow-800 flex-shrink-0">
+                                  Pending
+                                </Badge>
+                              )}
+                              {event.status === "approved" && (
+                                <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300 dark:bg-green-900/20 dark:text-green-500 dark:border-green-800 flex-shrink-0">
+                                  Approved
+                                </Badge>
+                              )}
+                            </div>
                             <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
                               <Calendar className="h-4 w-4" />
                               <span>{event.date} • {event.time}</span>

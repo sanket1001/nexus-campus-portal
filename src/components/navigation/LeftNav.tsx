@@ -1,4 +1,4 @@
-import { Home, Search, Calendar, User } from "lucide-react";
+import { Home, Search, Calendar, User, Shield } from "lucide-react";
 import { Button } from "../ui/button";
 import { cn } from "../ui/utils";
 import { NexusLogo } from "../common/NexusLogo";
@@ -6,9 +6,10 @@ import { NexusLogo } from "../common/NexusLogo";
 interface LeftNavProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
+  isAdmin?: boolean;
 }
 
-export function LeftNav({ activeTab, onTabChange }: LeftNavProps) {
+export function LeftNav({ activeTab, onTabChange, isAdmin = false }: LeftNavProps) {
   const navItems = [
     {
       id: "home",
@@ -31,6 +32,15 @@ export function LeftNav({ activeTab, onTabChange }: LeftNavProps) {
       icon: User,
     },
   ];
+  
+  // Add admin panel to nav items if user is admin
+  if (isAdmin) {
+    navItems.push({
+      id: "admin",
+      label: "Admin Panel",
+      icon: Shield,
+    });
+  }
 
   return (
     <aside 

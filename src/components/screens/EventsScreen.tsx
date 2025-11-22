@@ -38,7 +38,8 @@ export function EventsScreen({ onNavigate }: EventsScreenProps) {
       isBookmarked: false,
       isRSVPd: false,
       organizer: "Computer Science Club",
-      description: "Join us for a collaborative study session as we prepare for final exams. Bring your questions and let's tackle them together!"
+      description: "Join us for a collaborative study session as we prepare for final exams. Bring your questions and let's tackle them together!",
+      status: "approved"
     },
     {
       id: "evt2",
@@ -53,7 +54,8 @@ export function EventsScreen({ onNavigate }: EventsScreenProps) {
       isBookmarked: true,
       isRSVPd: true,
       organizer: "Campus Basketball League",
-      description: "Annual basketball tournament open to all skill levels. Form your team or join as a free agent!"
+      description: "Annual basketball tournament open to all skill levels. Form your team or join as a free agent!",
+      status: "approved"
     },
     {
       id: "evt3",
@@ -68,7 +70,8 @@ export function EventsScreen({ onNavigate }: EventsScreenProps) {
       isBookmarked: false,
       isRSVPd: false,
       organizer: "Art & Design Society",
-      description: "Celebrate student creativity at our winter exhibition featuring paintings, sculptures, and digital art."
+      description: "Celebrate student creativity at our winter exhibition featuring paintings, sculptures, and digital art.",
+      status: "approved"
     },
     {
       id: "evt4",
@@ -83,7 +86,8 @@ export function EventsScreen({ onNavigate }: EventsScreenProps) {
       isBookmarked: false,
       isRSVPd: false,
       organizer: "Alpha Beta Gamma",
-      description: "Meet representatives from various fraternities and sororities. Learn about opportunities for leadership and service."
+      description: "Meet representatives from various fraternities and sororities. Learn about opportunities for leadership and service.",
+      status: "approved"
     },
     {
       id: "evt5",
@@ -98,7 +102,8 @@ export function EventsScreen({ onNavigate }: EventsScreenProps) {
       isBookmarked: true,
       isRSVPd: false,
       organizer: "Volunteer Corps",
-      description: "Help maintain our campus community garden. We'll be planting, weeding, and harvesting fresh produce."
+      description: "Help maintain our campus community garden. We'll be planting, weeding, and harvesting fresh produce.",
+      status: "approved"
     },
     {
       id: "evt6",
